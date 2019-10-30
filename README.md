@@ -1,2 +1,6 @@
 # fullstack-project-4
- Object Oriented JS Game
+
+Treehouse Full Stack Project 4
+Object Oriented JavaScript Game
+
+Javascript Practice

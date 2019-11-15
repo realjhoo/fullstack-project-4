@@ -37,11 +37,15 @@ ul {
   display: inline-block;
 }
 
+li {
+}
+
 h2 {
   margin: 0;
   text-transform: uppercase;
   font-size: var(--font-size-large);
   margin: 0;
+  text-shadow: 0.1em 0.1em 0.2em rgba(0, 0, 0, 0.6);
 }
 
 h1 {
@@ -85,6 +89,10 @@ button {
   margin-top: 15px;
 }
 
+img {
+  filter: drop-shadow(5px 5px 5px #222);
+}
+
 /* Title */
 
 .header {
@@ -102,6 +110,8 @@ button {
   color: transparent;
   background: var(--color-neutral-light);
   border-radius: 5px;
+  margin-left: 4px;
+  box-shadow: 3px 9px 5px 0px rgba(51, 51, 51, 0.31);
 }
 
 .space {
@@ -128,9 +138,14 @@ button {
   justify-content: center;
 }
 
+.key {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  border-radius: 50%;
+}
+
 .chosen {
   background: #3a3f58;
-  border-radius: 50%;
+  /* border-radius: 50%; */
   /* border-radius: 5px; */
   font-size: var(--font-size-medium);
   color: #ffffff;
@@ -171,6 +186,11 @@ button {
   left: 0;
   right: 0;
   border-radius: 5px;
+  z-index: 1;
+}
+
+#game-over-message {
+  text-shadow: 0.1em 0.1em 0.2em rgba(0, 0, 0, 0.6);
 }
 
 .title {
@@ -191,10 +211,12 @@ button {
 
 .win a {
   color: var(--color-win);
+  opacity: 0.8;
 }
 
 .lose {
   background-color: #f5785f;
+  opacity: 0.8;
 }
 
 .lose a {

@@ -2,6 +2,9 @@
  * Project 4 - OOP Game App
  * Game.js */
 
+const win = true;
+const lose = false;
+
 // ==============================================================
 class Game {
   constructor() {
@@ -38,24 +41,84 @@ class Game {
     if (this.activePhrase.checkLetter(letterGuess)) {
       this.activePhrase.showMatchedLetter(letterGuess);
       letterGuess.classList.add("chosen");
+      if (this.checkForWin(win)) {
+        this.gameOver();
+      }
     } else {
       letterGuess.classList.add("wrong");
-      // game.over.removeLife();
+      this.removeLife();
     }
+    letterGuess.disabled = true;
   }
 
   // ============================================================
   checkForWin() {
     // stuff
+    const letter = document.querySelectorAll(".letter").length;
+    const show = document.querySelectorAll(".show").length;
+
+    if (letter === show) {
+      this.gameOver(win);
+    }
   }
 
   // ============================================================
   removeLife() {
     //stuff
+
+    let heart = document.getElementsByTagName("img");
+    heart[this.missed].setAttribute("src", "images/lostHeart.png");
+    this.missed += 1;
+    if (this.missed === 5) {
+      this.gameOver(lose);
+    }
   }
 
   // ============================================================
-  gameOver() {
+  gameOver(youWon) {
     // stuff
+    const gameOverMessage = document.getElementById("game-over-message");
+    const overlay = document.getElementById("overlay");
+    const buttonText = document.getElementById("btn__reset");
+
+    if (youWon) {
+      // yaay
+      console.log("winner");
+      gameOverMessage.textContent = "Victory!!!";
+      overlay.classList.add("win");
+    } else {
+      // boooo
+      console.log("loser");
+      gameOverMessage.textContent = "Defeat!!!";
+      overlay.classList.add("lose");
+    }
+    buttonText.textContent = "Play Again";
+    overlay.style.display = "flex";
+
+    this.reset();
+  }
+
+  // ============================================================
+  reset() {
+    //reset the game
+    console.log("Resetting the game");
+    this.missed = 0;
+    // remove all li elements
+    const x = document.getElementsByTagName("ul");
+    x[0].innerHTML = "";
+
+    // remove classes wrong and chosen from class key
+    let key = document.getElementsByClassName("key");
+    for (let i = 0; i < key.length; i++) {
+      key[i].classList.remove("chosen");
+      key[i].classList.remove("wrong");
+      key[i].disabled = false;
+    }
+
+    let heart = document.getElementsByTagName("img");
+    // reset the hearts
+    for (let j = 0; j < 5; j++) {
+      heart[j].setAttribute("src", "images/liveHeart.png");
+    }
   }
 }

@@ -13,7 +13,6 @@ document.getElementById("btn__reset").addEventListener("click", () => {
 // ==============================================================
 document.getElementById("qwerty").addEventListener("click", event => {
   if (event.target.tagName == "BUTTON") {
-    // console.log(event.target.innerText);
     game.handleInteraction(event.target);
   }
 });
@@ -21,13 +20,11 @@ document.getElementById("qwerty").addEventListener("click", event => {
 // =============================================================
 window.addEventListener("keyup", event => {
   if (event.keyCode > 64 && event.keyCode < 90) {
-    // this should click the appopriate letter
-    // I can pass the letter, and sort it out with an if
-    // in handleInteraction()
-    // then send to 2nd checkLetter... after that should be same
-    console.log(
-      "Code: " + String.fromCharCode(event.keyCode).toLocaleLowerCase()
-    );
-    console.log(event.target);
+    // get the letter of the clicked key, then send it to the
+    // method that matches the to the onscreen keyboard
+
+    let keyClicked = String.fromCharCode(event.keyCode).toLowerCase();
+
+    game.clickKeyboard(keyClicked);
   }
 });

@@ -21,6 +21,7 @@ class Game {
 
   // ============================================================
   getRandomPhrase() {
+    // pick a random phrase
     let randomPhrase = Math.floor(Math.random() * this.phrases.length);
     let phrase = this.phrases[randomPhrase];
     return phrase;
@@ -28,19 +29,27 @@ class Game {
 
   // ============================================================
   startGame() {
-    document.getElementById("overlay").style.display = "none";
+    // set up the game board
+    // reset the overlay
+    const overlay = document.getElementById("overlay");
+    overlay.classList.remove("lose");
+    overlay.classList.remove("win");
+    overlay.style.display = "none";
+
     this.activePhrase = this.getRandomPhrase();
     this.activePhrase.addPhraseToDisplay();
 
-    // log out the random phrase
+    // *** log out the random phrase ***
     console.log(this.activePhrase);
   }
 
   // ============================================================
   handleInteraction(letterGuess) {
+    // program branches from here
     if (this.activePhrase.checkLetter(letterGuess)) {
       this.activePhrase.showMatchedLetter(letterGuess);
       letterGuess.classList.add("chosen");
+
       if (this.checkForWin(win)) {
         this.gameOver();
       }
@@ -48,27 +57,36 @@ class Game {
       letterGuess.classList.add("wrong");
       this.removeLife();
     }
-    letterGuess.disabled = true;
+
+    // sometimes, key is disabled before classes are set
+    if (
+      letterGuess.classList.contains("chosen") ||
+      letterGuess.classList.contains("wrong")
+    ) {
+      letterGuess.disabled = true;
+    }
   }
 
   // ============================================================
   checkForWin() {
-    // stuff
-    const letter = document.querySelectorAll(".letter").length;
-    const show = document.querySelectorAll(".show").length;
+    // if we guess the same number of letters as were in
+    // the puzzle, we win
+    const allLetters = document.querySelectorAll(".letter").length;
+    const revealed = document.querySelectorAll(".show").length;
 
-    if (letter === show) {
+    if (allLetters === revealed) {
       this.gameOver(win);
     }
   }
 
   // ============================================================
   removeLife() {
-    //stuff
-
-    let heart = document.getElementsByTagName("img");
+    // remove a life on wrong guess
+    const heart = document.getElementsByTagName("img");
     heart[this.missed].setAttribute("src", "images/lostHeart.png");
+
     this.missed += 1;
+
     if (this.missed === 5) {
       this.gameOver(lose);
     }
@@ -76,22 +94,21 @@ class Game {
 
   // ============================================================
   gameOver(youWon) {
-    // stuff
+    // end game, win or lose
     const gameOverMessage = document.getElementById("game-over-message");
     const overlay = document.getElementById("overlay");
     const buttonText = document.getElementById("btn__reset");
 
     if (youWon) {
-      // yaay
-      console.log("winner");
+      // set win screen yaay
       gameOverMessage.textContent = "Victory!!!";
       overlay.classList.add("win");
     } else {
-      // boooo
-      console.log("loser");
+      // set lose screen boooo
       gameOverMessage.textContent = "Defeat!!!";
       overlay.classList.add("lose");
     }
+
     buttonText.textContent = "Play Again";
     overlay.style.display = "flex";
 
@@ -101,24 +118,35 @@ class Game {
   // ============================================================
   reset() {
     //reset the game
-    console.log("Resetting the game");
     this.missed = 0;
-    // remove all li elements
-    const x = document.getElementsByTagName("ul");
-    x[0].innerHTML = "";
 
-    // remove classes wrong and chosen from class key
-    let key = document.getElementsByClassName("key");
+    // remove the puzzle
+    const ul = document.getElementsByTagName("ul");
+    ul[0].innerHTML = "";
+
+    // remove wrong and chosen classes from key
+    const key = document.getElementsByClassName("key");
     for (let i = 0; i < key.length; i++) {
       key[i].classList.remove("chosen");
       key[i].classList.remove("wrong");
       key[i].disabled = false;
     }
 
-    let heart = document.getElementsByTagName("img");
     // reset the hearts
+    const heart = document.getElementsByTagName("img");
     for (let j = 0; j < 5; j++) {
       heart[j].setAttribute("src", "images/liveHeart.png");
+    }
+  }
+
+  // ============================================================
+  clickKeyboard(keyClicked) {
+    // find and click the matching onscreen keyboard key
+    const key = document.getElementsByClassName("key");
+    for (let i = 0; i < key.length; i++) {
+      if (keyClicked === key[i].innerText) {
+        key[i].click();
+      }
     }
   }
 }
